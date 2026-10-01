@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vendor Decision Intelligence | Data Relationship Graph</title>
+  <style>
+    :root {
+      --ink: #16222f;
+      --muted: #5a6773;
+      --paper: #f3f6f4;
+      --panel: #ffffff;
+      --line: #d6dfdb;
+      --teal: #007b74;
+      --blue: #2869a8;
+      --amber: #c68418;
+      --red: #b63f3f;
+      --green: #2b8058;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: Georgia, "Times New Roman", serif; }
+    header { padding: 28px clamp(20px, 5vw, 72px); background: var(--ink); color: white; display: flex; justify-content: space-between; gap: 24px; align-items: end; }
+    h1 { margin: 0; font-size: 30px; font-weight: 500; letter-spacing: 0; }
+    header p { margin: 7px 0 0; color: #c9d7d2; font-family: "Trebuchet MS", sans-serif; font-size: 14px; }
+    .source-count { font: 12px "Trebuchet MS", sans-serif; color: #a9d8d1; white-space: nowrap; }
+    main { padding: 24px clamp(20px, 5vw, 72px) 40px; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    label { font: 700 12px "Trebuchet MS", sans-serif; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+    select { margin-left: 10px; min-width: 270px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: white; font: 14px Georgia, serif; }
+    .status { font: 13px "Trebuchet MS", sans-serif; color: var(--muted); }
+    .canvas { min-height: 650px; border: 1px solid var(--line); background: var(--panel); overflow: auto; }
+    svg { display: block; min-width: 1060px; width: 100%; height: 650px; }
+    .edge { stroke: #8ea7a0; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    .edge-label { font: 11px "Trebuchet MS", sans-serif; fill: #63756e; text-anchor: middle; }
+    .node rect { stroke-width: 1.5; rx: 5; }
+    .node-title { font: 700 14px Georgia, serif; fill: var(--ink); }
+    .node-detail { font: 11px "Trebuchet MS", sans-serif; fill: #405047; }
+    .node-kind { font: 700 10px "Trebuchet MS", sans-serif; letter-spacing: .8px; }
+    .finance rect { fill: #ebf2fa; stroke: var(--blue); }
+    .contract rect { fill: #e8f6f3; stroke: var(--teal); }
+    .service rect { fill: #f8f1df; stroke: var(--amber); }
+    .workforce rect { fill: #eef1f3; stroke: #63737f; }
+    .risk rect { fill: #faebeb; stroke: var(--red); }
+    .dependency rect { fill: #ecf5ee; stroke: var(--green); }
+    .finance .node-kind { fill: var(--blue); }
+    .contract .node-kind { fill: var(--teal); }
+    .service .node-kind { fill: var(--amber); }
+    .workforce .node-kind { fill: #63737f; }
+    .risk .node-kind { fill: var(--red); }
+    .dependency .node-kind { fill: var(--green); }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; font: 12px "Trebuchet MS", sans-serif; color: var(--muted); }
+    .legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 5px; border-radius: 50%; background: var(--color); }
+    .detail-grid { display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: 12px; margin-top: 18px; }
+    .detail { padding: 13px; border-top: 3px solid var(--teal); background: white; }
+    .detail b { display: block; font: 700 11px "Trebuchet MS", sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; }
+    .detail span { display: block; margin-top: 6px; font-size: 15px; }
+    @media (max-width: 720px) { header, .toolbar { align-items: flex-start; flex-direction: column; } select { margin: 8px 0 0; width: 100%; } .detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Vendor Decision Intelligence</h1>
+      <p>Relationship graph across financial, forecast, contract, SLA, risk, workforce, and technology data.</p>
+    </div>
+    <div class="source-count">3 connected CSV sources</div>
+  </header>
+  <main>
+    <div class="toolbar">
+      <div><label for="vendorSelect">Explore Vendor</label><select id="vendorSelect"></select></div>
+      <div class="legend">
+        <span style="--color:#2869a8">Financials</span><span style="--color:#007b74">Contract / SLA</span><span style="--color:#c68418">Service</span><span style="--color:#63737f">Workforce</span><span style="--color:#2b8058">Technology</span><span style="--color:#b63f3f">Risk</span>
+      </div>
+    </div>
+    <div id="status" class="status">Loading the three CSV files...</div>
+    <div class="canvas"><svg id="graph" viewBox="0 0 1180 650" aria-label="Vendor relationship graph"></svg></div>
+    <div id="details" class="detail-grid"></div>
+  </main>
+  <script>
+    const files = {
+      financial: "CT_Technology_Financials.csv",
+      forecast: "CT_Vendor_Technology_Forecast.csv",
+      workforce: "CT_Workforce_Organization.csv"
+    };
+    const parseCsv = text => {
+      const rows = []; let row = [], cell = "", quoted = false;
+      for (let index = 0; index < text.length; index++) {
+        const char = text[index], next = text[index + 1];
+        if (char === '"' && quoted && next === '"') { cell += '"'; index++; }
+        else if (char === '"') quoted = !quoted;
+        else if (char === ',' && !quoted) { row.push(cell); cell = ""; }
+        else if ((char === '\n' || char === '\r') && !quoted) {
+          if (char === '\r' && next === '\n') index++;
+          row.push(cell); if (row.length > 1) rows.push(row); row = []; cell = "";
+        } else cell += char;
+      }
+      if (cell || row.length) { row.push(cell); rows.push(row); }
+      const headers = rows.shift().map(value => value.replace(/^\uFEFF/, "").trim());
+      return rows.map(values => Object.fromEntries(headers.map((header, index) => [header, values[index] || ""])));
+    };
+    const first = (items, key, value) => items.find(item => item[key] === value);
+    const money = value => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Number(value || 0));
+    const truncate = (value, length = 32) => value.length > length ? `${value.slice(0, length - 1)}...` : value;
+    const node = (kind, x, y, title, details) => ({ kind, x, y, title, details });
+    const draw = data => {
+      const vendorId = document.querySelector("#vendorSelect").value;
+      const finance = first(data.financial.filter(row => row.Scenario === "Forecast"), "Vendor_ID", vendorId);
+      const forecast = first(data.forecast, "Vendor_ID", vendorId);
+      const workforce = data.workforce.filter(row => row.Vendor_ID === vendorId);
+      const risk = JSON.parse(forecast.Risk_Register_JSON || "[]");
+      const technology = workforce[0] || {};
+      const nodes = [
+        node("finance", 40, 260, finance.Vendor_Name, [`Vendor: ${vendorId}`, `Forecast: ${money(finance.FY_USD)}`, `Budget variance: ${money(finance.FY_Variance_vs_Budget)}`]),
+        node("contract", 280, 100, finance.Contract_ID, [`Ends: ${finance.Contract_End_Date}`, `Renewal: ${finance.Renewal_Date}`, `Status: ${finance.Contract_Status}`]),
+        node("service", 520, 260, finance.Primary_Service, [`Criticality: ${finance.Criticality}`, `SLA: ${finance.SLA_Status}`, `Open issues: ${finance.Number_of_Open_Issues}`]),
+        node("workforce", 750, 100, `${workforce.length} delivery roles`, [`Team: ${truncate(technology.Team_Name || "Not recorded")}`, `Example role: ${technology.JOB_TITLE || "Not recorded"}`, `Transition: documented`]),
+        node("dependency", 750, 410, technology.Application || "Application", [`Technology: ${truncate(technology.Technology_Stack || "Not recorded")}`, `Cloud: ${technology.Cloud_Infrastructure || "Not recorded"}`, `Downstream: ${technology.Downstream_System || "Not recorded"}`]),
+        node("risk", 1000, 260, `${risk.length} risk categories`, [`Overall risk: ${finance.Vendor_Risk_Rating}`, `Operational: ${finance.Operational_Risk_Rating}`, `SLA breach: ${finance.Source_SLA_Breach}`])
+      ];
+      const edges = [[0,1,"governed by"],[1,2,"delivers"],[2,3,"staffed by"],[2,4,"runs on"],[2,5,"exposes"]];
+      const svg = document.querySelector("#graph");
+      svg.innerHTML = `<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8ea7a0" /></marker></defs>`;
+      edges.forEach(([from, to, label]) => {
+        const left = nodes[from], right = nodes[to];
+        const x1 = left.x + 155, y1 = left.y + 50, x2 = right.x + 5, y2 = right.y + 50;
+        svg.insertAdjacentHTML("beforeend", `<path class="edge" d="M ${x1} ${y1} C ${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2} ${y2}"/><text class="edge-label" x="${(x1+x2)/2}" y="${(y1+y2)/2 - 9}">${label}</text>`);
+      });
+      nodes.forEach(item => {
+        const lines = item.details.map((detail, index) => `<text class="node-detail" x="${item.x + 16}" y="${item.y + 53 + index * 17}">${detail}</text>`).join("");
+        svg.insertAdjacentHTML("beforeend", `<g class="node ${item.kind}"><rect x="${item.x}" y="${item.y}" width="155" height="112"/><text class="node-kind" x="${item.x + 16}" y="${item.y + 20}">${item.kind.toUpperCase()}</text><text class="node-title" x="${item.x + 16}" y="${item.y + 40}">${truncate(item.title, 24)}</text>${lines}</g>`);
+      });
+      document.querySelector("#details").innerHTML = [
+        ["Contract value", money(finance.Annual_Spend_USD)], ["SLA result", `${finance.Source_SLA_Actual_Percent}% vs ${finance.Source_SLA_Target_Percent}%`], ["Data access", `${finance.Data_Access_Level}; PII: ${finance.PII_Access}`], ["Termination cap", money(finance.Termination_Cost_Cap_USD)]
+      ].map(([label, value]) => `<div class="detail"><b>${label}</b><span>${value}</span></div>`).join("");
+    };
+    Promise.all(Object.entries(files).map(async ([key, file]) => [key, parseCsv(await (await fetch(file)).text())]))
+      .then(entries => {
+        const data = Object.fromEntries(entries);
+        const vendors = [...new Map(data.forecast.map(row => [row.Vendor_ID, row.Vendor_Name])).entries()];
+        const select = document.querySelector("#vendorSelect");
+        select.innerHTML = vendors.map(([id, name]) => `<option value="${id}">${id} | ${name}</option>`).join("");
+        select.addEventListener("change", () => draw(data));
+        document.querySelector("#status").textContent = `Loaded ${data.financial.length} financial rows, ${data.forecast.length} forecast/contract rows, and ${data.workforce.length} workforce rows.`;
+        draw(data);
+      })
+      .catch(error => { document.querySelector("#status").textContent = `Unable to load source CSVs: ${error.message}`; });
+  </script>
+</body>
+</html>

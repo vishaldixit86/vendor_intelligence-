@@ -1,0 +1,28 @@
+SLA_ID,Vendor_ID,Contract_ID,Measurement_Month,Metric,SLA_Target,Actual_Performance,SLA_Breach_Indicator,Service_Credit_or_Penalty_USD,Status
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,System Availability,99.90%,99.96%,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,System Availability,99.90%,99.91%,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,System Availability,99.90%,99.72%,Yes,12000.00,Breached
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,Critical Incident Response,15 minutes,12 minutes,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,Critical Incident Response,15 minutes,14 minutes,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,Critical Incident Response,15 minutes,18 minutes,Yes,5000.00,Breached
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,Critical Incident Resolution,4 hours,3.3 hours,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,Critical Incident Resolution,4 hours,3.8 hours,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,Critical Incident Resolution,4 hours,4.7 hours,Yes,5000.00,Breached
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,Data Processing Latency,5 minutes,3.8 minutes,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,Data Processing Latency,5 minutes,4.1 minutes,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,Data Processing Latency,5 minutes,6.2 minutes,Yes,2500.00,Breached
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,Batch Processing Completion,06:00 UK time,05:42 UK time,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,Batch Processing Completion,06:00 UK time,05:55 UK time,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,Batch Processing Completion,06:00 UK time,06:21 UK time,Yes,2500.00,Breached
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,Disaster Recovery RTO,4 hours,3.5 hours,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,Disaster Recovery RTO,4 hours,3.7 hours,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,Disaster Recovery RTO,4 hours,3.9 hours,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,Disaster Recovery RPO,15 minutes,10 minutes,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,Disaster Recovery RPO,15 minutes,11 minutes,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,Disaster Recovery RPO,15 minutes,13 minutes,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,Security Incident Notification,4 hours,2.1 hours,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,Security Incident Notification,4 hours,3.4 hours,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,Security Incident Notification,4 hours,3.7 hours,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-06,Monthly Reporting Deadline,5th business day,4th business day,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-07,Monthly Reporting Deadline,5th business day,5th business day,No,0.00,Compliant
+SLA-NB-001,V-NB-001,CTR-NB-2026-001,2026-08,Monthly Reporting Deadline,5th business day,7th business day,Yes,1000.00,Breached

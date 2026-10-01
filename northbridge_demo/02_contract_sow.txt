@@ -1,0 +1,35 @@
+SYNTHETIC STATEMENT OF WORK
+Customer Insight Analytics Platform Services
+
+Contract ID: CTR-NB-2026-001
+Vendor: Northbridge Data Systems Ltd. (Northbridge)
+Client: Meridian Vale Financial Group (MVFG)
+Effective Date: 1 January 2026
+Term End Date: 31 December 2028
+
+1. Scope of Services
+Northbridge shall operate and support the Customer Insight Analytics Platform for MVFG Consumer Banking. The service ingests approved customer interaction, product, and transaction-event datasets from MVFG APIs; enriches those datasets using bank-approved rules; and provides analytical datasets, dashboards, and scheduled reports. Northbridge will not make automated credit, eligibility, pricing, or customer-treatment decisions. MVFG retains all business decisions and control of model, rule, and report approval.
+
+2. Deliverables and Responsibilities
+Northbridge shall provide a production analytics platform hosted in AWS London; configured data-ingestion APIs and PostgreSQL data stores; monthly customer insight reports; quarterly service and risk reports; an annual disaster-recovery exercise report; current operating procedures, architecture diagrams, and data-flow documentation; and transition assistance. Northbridge is responsible for operations, monitoring, incident triage, access administration, vulnerability remediation, service reporting, and technical documentation. MVFG is responsible for source-data quality, lawful data-use instructions, change approval, authorized-user designation, and deliverable approval. Elena Marlowe is MVFG Contract Owner and Marcus Chen is relationship manager.
+
+3. Commercial Terms and Payment
+The total committed contract value is USD 4,800,000 over thirty-six months. The annual fixed managed-service fee is USD 1,200,000, invoiced monthly in arrears at USD 100,000. Variable data-processing charges apply at USD 0.018 per processed customer interaction after the included annual volume of 100,000,000 interactions. Professional services require an MVFG-approved statement of work at USD 185 per hour. Undisputed invoices are payable within 30 calendar days. A 3 percent volume discount applies when annual processed volume exceeds 140,000,000 interactions.
+
+4. Service Levels and Incident Management
+Northbridge shall meet the service levels in SLA-NB-001. Monthly production availability shall be at least 99.90 percent, excluding approved maintenance windows of no more than four hours per calendar month. Severity 1 incidents require acknowledgement within 15 minutes and restoration or an agreed workaround within four hours. Severity 2 incidents require acknowledgement within 30 minutes and restoration or an agreed workaround within eight business hours. Daily batch processing shall complete by 06:00 UK time. Northbridge shall operate a twenty-four-hour incident contact point, provide Severity 1 updates at least every 30 minutes, provide root-cause analysis within five business days, and submit the monthly performance report by the fifth business day. Service credits apply as stated in the SLA dataset without limiting termination rights for persistent material breach.
+
+5. Data Security, Retention, and Confidentiality
+MVFG data remains MVFG confidential information. Northbridge shall process data only on documented instructions, apply least-privilege access and multi-factor authentication, encrypt data in transit using TLS 1.2 or higher and at rest using AES-256 or equivalent approved controls. Personal-data access is limited to named support personnel with a justified operational need. Privileged-access logs shall be retained and supplied on request. Northbridge shall notify MVFG of a confirmed or suspected security incident affecting MVFG data within four hours of discovery. Production customer-level data shall not be retained for more than 13 months, backups for more than 35 days, and all remaining data shall be returned then securely deleted within 30 days after termination, subject to legal retention obligations. Confidentiality obligations continue for five years after termination; trade secrets and personal data remain protected as law requires.
+
+6. Regulatory Obligations, Audit Rights, and Subcontractors
+Northbridge shall comply with applicable financial-services outsourcing, data-protection, operational-resilience, and records-management requirements. It shall support MVFG, auditors, and regulators with reasonable access to relevant records, systems, premises, personnel, and subcontractor information. MVFG may conduct one planned audit annually plus audits after a material incident, regulatory request, or material control failure. AWS is an approved infrastructure subcontractor. Any material subcontractor change requires 90 days' notice and MVFG approval; Northbridge remains fully responsible for subcontractors.
+
+7. Business Continuity, Disaster Recovery, and Technology Dependencies
+Northbridge shall maintain and test business-continuity and disaster-recovery plans annually. The recovery time objective is four hours and recovery point objective is 15 minutes. Test failure or material recovery-plan change must be notified within one business day and remediated within 60 days unless MVFG approves otherwise. The service depends on the Customer Insight Platform application, API gateway, PostgreSQL, AWS London infrastructure, MVFG Customer Interaction Hub, MVFG Identity and Access Management, and Enterprise Risk Dashboard. Material technology, hosting-region, API, or database changes require 90 days' notice and MVFG approval when they affect security, resilience, performance, or data location.
+
+8. Termination, Renewal, and Liability
+Either party may terminate for uncured material breach after 30 days' notice, insolvency, or repeated service-level failure. MVFG may terminate for convenience after 12 months on 90 days' notice and shall pay undisputed service charges plus approved non-cancellable transition costs capped at USD 150,000. Northbridge shall provide up to six months of transition assistance at the professional-services rate. Renewal discussions begin no later than 180 days before the 4 July 2028 renewal decision date; no automatic renewal applies. Each party's aggregate liability is capped at 150 percent of fees paid or payable in the preceding 12 months, except for fraud, wilful misconduct, confidentiality breach, infringement indemnities, or liabilities that cannot be limited by law. Northbridge maintains cyber and professional indemnity insurance of at least USD 10,000,000 per claim.
+
+9. Governance
+The parties shall hold monthly service reviews and quarterly executive governance meetings. Northbridge shall maintain an action log covering SLA breaches, security findings, audit actions, and open operational issues. This SOW is entirely synthetic and creates no obligation for a real organization.
